@@ -118,10 +118,10 @@
           "name": "minecraft:enchanted_book",
           "functions": [
             {
-              "function": "enchant_randomly",
-              "enchantments": [
-                "soul_speed"
-              ]
+              "function": "set_enchantments",
+              "enchantments": {
+                "minecraft:soul_speed": 1
+              }
             }
           ]
         }
