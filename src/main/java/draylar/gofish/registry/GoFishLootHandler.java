@@ -1,24 +1,26 @@
 package draylar.gofish.registry;
 
 import draylar.gofish.impl.GoFishLootTables;
+import draylar.gofish.loot.MatchFishingRodCondition;
 import draylar.gofish.loot.WeatherCondition;
 import draylar.gofish.loot.biome.MatchBiomeLootCondition;
 import draylar.gofish.loot.moon.FullMoonCondition;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v2.LootTableSource;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.condition.EntityPropertiesLootCondition;
 import net.minecraft.loot.condition.LocationCheckLootCondition;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.entry.LootPoolEntry;
 import net.minecraft.loot.entry.LootTableEntry;
 import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.entity.FishingHookPredicate;
 import net.minecraft.predicate.entity.LocationPredicate;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
@@ -91,6 +93,19 @@ public class GoFishLootHandler {
                     lpb.with(ItemEntry.builder(GoFishItems.THUNDERING_BASS).weight(50).conditionally(WeatherCondition.builder(false, true, false)).build());
                     lpb.with(ItemEntry.builder(GoFishItems.CLOUDY_CRAB).weight(50).conditionally(LocationCheckLootCondition.builder(LocationPredicate.Builder.createY(NumberRange.DoubleRange.atLeast(150)))).build());
                     lpb.with(ItemEntry.builder(GoFishItems.BLIZZARD_BASS).weight(100).conditionally(WeatherCondition.builder(false, false, true)).build());
+
+                    lpb.with(ItemEntry.builder(Items.SKELETON_SKULL)
+                            .weight(50)
+                            .conditionally(MatchFishingRodCondition.builder(Registries.ITEM.getEntry(GoFishItems.SKELETAL_ROD).getKey().get().getValue()))
+                            .build());
+
+                    if (GoFishLootTables.END_FISHING.equals(key)) {
+                        lpb.with(ItemEntry.builder(GoFishItems.MATRIX_FISH)
+                                .weight(100)
+                                .conditionally(MatchFishingRodCondition.builder(Registries.ITEM.getEntry(GoFishItems.MATRIX_ROD).getKey().get().getValue()))
+                                .build());
+                    }
+
                 });
             }
         });
